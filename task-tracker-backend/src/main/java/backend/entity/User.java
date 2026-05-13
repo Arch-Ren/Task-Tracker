@@ -1,4 +1,4 @@
-package task_tracker.entity;
+package backend.entity;
 
 import jakarta.persistence.*; //import library JPA
 

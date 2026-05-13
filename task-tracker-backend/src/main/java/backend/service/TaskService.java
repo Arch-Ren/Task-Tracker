@@ -1,9 +1,10 @@
-package task_tracker.service;
+package backend.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import task_tracker.entity.Tasks;
-import task_tracker.repository.TasksRepository;
+
+import backend.entity.Tasks;
+import backend.repository.TasksRepository;
 
 import java.util.Arrays;
 import java.util.List;

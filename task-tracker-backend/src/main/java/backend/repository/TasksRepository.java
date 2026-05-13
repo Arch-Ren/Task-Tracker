@@ -1,8 +1,10 @@
-package task_tracker.repository;
+package backend.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import task_tracker.entity.Tasks;
+
+import backend.entity.Tasks;
+
 import java.util.List;
 
 @Repository
