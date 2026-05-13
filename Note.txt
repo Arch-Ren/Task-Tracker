@@ -1,0 +1,12 @@
+src/resources/templates/application.properties berfungsi untuk menghubungkan program dengan database.
+    ddl-auto=update untuk menyesuaikan struktur database melalui kode program.
+
+src/main/java/task_tracker/entity berfungsi untuk menyimpan entitas yang ada di database beserta atributnya.
+    @Entity pada class berfungsi untuk menandai bahwa class tersebut mewakili entitas dalam database
+    @ID dan @GeneratedValue berfungsi untuk mengatur primary key tabel dan auto increment
+    @Collumn untuk menandai kolom atribut entitas
+    @ManyToOne adalah relasi dari database dimana banyak tugas bisa dimiliki oleh 1 User
+    
+    
+    entity/Task adalah entitas Tasks beserta atribut dan setter getter (framework lombok).
+    entity/User adalah entitas User beserta atribut
