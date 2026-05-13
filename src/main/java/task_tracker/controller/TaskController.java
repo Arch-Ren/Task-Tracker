@@ -11,20 +11,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import task_tracker.entity.Tasks;
 import task_tracker.repository.TasksRepository;
-import task_tracker.service.taskService;
+import task_tracker.service.TaskService;
 
 import java.util.List;
 
-@RestController     //penanda class yang menangani API
-@RequestMapping("/api/tasks")       //alamat URL
+@RestController // penanda class yang menangani API
+@RequestMapping("/api/tasks") // alamat URL
 public class TaskController {
-    
-    @Autowired
-    private taskService taskService;
 
-    @GetMapping
-    public List<Tasks> getAllTasks() {
-        return taskService.getAllTasks();
+    @Autowired
+    private TaskService taskService;
+
+    @GetMapping("/user/{userId}")
+    public List<Tasks> getTasksByUser(@PathVariable Long userId) {
+        return taskService.getTasksByUserId(userId);
     }
 
     @PostMapping
@@ -32,14 +32,14 @@ public class TaskController {
         return taskService.createTask(task);
     }
 
-    @PutMapping("/{id}")
-    public Tasks updateTasks(@PathVariable Long id, @RequestBody Tasks task) {
-        return taskService.updateTask(id, task);
+    @PutMapping("/{tasksId}/user/{userId}")
+    public Tasks updateTasks(@PathVariable Long tasksId, @PathVariable Long userId, @RequestBody Tasks task) {
+        return taskService.updateTask(tasksId, userId, task);
     }
 
-    @DeleteMapping("/{id}")
-    public String DeleteTask(@PathVariable Long id) {
-    taskService.deleteTask(id);
-    return "task dengan ID " + id + " berhasil dihapus";
+    @DeleteMapping("/{tasksId}/user/{userId}")
+    public String DeleteTask(@PathVariable Long tasksId, @PathVariable Long userId) {
+        taskService.deleteTask(tasksId, userId);
+        return "task berhasil dihapus";
     }
 }

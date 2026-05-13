@@ -8,7 +8,7 @@ public class User {
 
     @Id // menandai bahwa field ini adalah primary key
     @GeneratedValue(strategy = GenerationType.IDENTITY) // field ini akan diisi otomatis
-    private long id;
+    private Long id;
 
     @Column(name = "username", nullable = false) // menghubungkan ke kolom username
     private String username;
@@ -19,13 +19,13 @@ public class User {
     public User() {
     }
 
-    public User(long id, String username, String email) {
+    public User(Long id, String username, String email) {
         this.id = id;
         this.username = username;
         this.email = email;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -37,7 +37,7 @@ public class User {
         return email;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

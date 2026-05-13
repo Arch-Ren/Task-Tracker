@@ -9,15 +9,15 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
-public class taskService {
-    
+public class TaskService {
+
     @Autowired
     private TasksRepository tasksRepository;
 
     private final List<String> ALLOWED_STATUES = Arrays.asList("TODO", "IN_PROGRESS", "DONE");
 
-    public List<Tasks> getAllTasks() {
-        return tasksRepository.findAll();
+    public List<Tasks> getTasksByUserId(Long userId) {
+        return tasksRepository.findByUserId(userId);
     }
 
     public Tasks createTask(Tasks task) {
@@ -25,29 +25,40 @@ public class taskService {
         return tasksRepository.save(task);
     }
 
-    public Tasks updateTask(Long id, Tasks taskDetails) {
-        Tasks task = tasksRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Task dengan id " + id + " tidak ditemukan"));
-        
-        validateTask(taskDetails);
+    public Tasks updateTask(Long tasksId, Long userId, Tasks taskDetails) {
+        Tasks task = tasksRepository.findById(tasksId)
+                .orElseThrow(() -> new RuntimeException("Task tidak ditemukan"));
 
+        if (!task.getUser().getId().equals(userId)) {
+            throw new RuntimeException("Anda tidak memiliki izin untuk mengubah tasks ini");
+        }
+
+        validateTask(taskDetails);
         task.setDescription(taskDetails.getDescription());
         task.setStatus(taskDetails.getStatus());
 
         return tasksRepository.save(task);
     }
 
-    public void deleteTask(Long id) {
-        tasksRepository.deleteById(id);
+    public void deleteTask(Long tasksId, Long userId) {
+        Tasks task = tasksRepository.findById(tasksId)
+                .orElseThrow(() -> new RuntimeException("Task tidak ditemukan"));
+
+        if (!task.getUser().getId().equals(userId)) {
+            throw new RuntimeException("Anda tidak memiliki izin untuk menghapus tasks ini");
+        }
+
+        tasksRepository.delete(task);
     }
 
     private void validateTask(Tasks task) {
-        if(task.getDescription() != null && task.getDescription().length() > 100) {
+        if (task.getDescription() != null && task.getDescription().length() > 100) {
             throw new RuntimeException("Operasi gagal. Deskripsi terlalu panjang. Maksimal 100 karakter");
         }
 
-        if(!ALLOWED_STATUES.contains(task.getStatus())) {
-            throw new RuntimeException("Operasi gagal. Status '" + task.getStatus() + "' tidak valid. Gunakan antara TODO, IN_PROGRESS, atau DONE!");
+        if (!ALLOWED_STATUES.contains(task.getStatus())) {
+            throw new RuntimeException("Operasi gagal. Status '" + task.getStatus()
+                    + "' tidak valid. Gunakan antara TODO, IN_PROGRESS, atau DONE!");
         }
     }
 
