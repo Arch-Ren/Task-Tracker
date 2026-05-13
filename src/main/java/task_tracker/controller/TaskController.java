@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import task_tracker.entity.Tasks;
 import task_tracker.repository.TasksRepository;
+import task_tracker.service.taskService;
 
 import java.util.List;
 
@@ -19,32 +20,26 @@ import java.util.List;
 public class TaskController {
     
     @Autowired
-    private TasksRepository taskRepository;
+    private taskService taskService;
 
     @GetMapping
     public List<Tasks> getAllTasks() {
-        return taskRepository.findAll();
+        return taskService.getAllTasks();
     }
 
     @PostMapping
     public Tasks createTasks(@RequestBody Tasks task) {
-        return taskRepository.save(task);
+        return taskService.createTask(task);
     }
 
     @PutMapping("/{id}")
-    public Tasks updateTasks(@PathVariable Long id, @RequestBody Tasks taskDetails) {
-        Tasks task = taskRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Task tidak ditemukan dengan id: " + id));
-
-            task.setDescription(taskDetails.getDescription());
-            task.setStatus(taskDetails.getStatus());
-
-            return taskRepository.save(task);
+    public Tasks updateTasks(@PathVariable Long id, @RequestBody Tasks task) {
+        return taskService.updateTask(id, task);
     }
 
     @DeleteMapping("/{id}")
     public String DeleteTask(@PathVariable Long id) {
-        taskRepository.deleteById(id);
-        return "task dengan ID " + id + " berhasil dihapus";
+    taskService.deleteTask(id);
+    return "task dengan ID " + id + " berhasil dihapus";
     }
 }
